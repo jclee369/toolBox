@@ -3,7 +3,7 @@
 //Web workers
 var w;
 
-function startWorker(wsource){
+function startWorker(wsource, resID){
 	
 	 if(typeof(Worker) !== "undefined") {
 	        if(typeof(w) == "undefined") {
@@ -13,7 +13,7 @@ function startWorker(wsource){
 	         //   document.getElementById("result").innerHTML = event.data;
 	        //};
 	    } else {
-	        document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+	        document.getElementById(resID).innerHTML = "Sorry, your browser does not support Web Workers...";
 	    }
 	}
 
@@ -54,12 +54,12 @@ function resizeIFrame(iframeID) {
 // change iframe source
 function changeSrc(src, frameID){
 		if(document.body){
-			document.getElementById("content").src = src +".html";
+			document.getElementById(frameID).src = src +".html";
 		}
 
 		try{	
 			
-			var frame	=	document.getElementById("content");
+			var frame = document.getElementById(frameID);
 			
 			if ( frame.contentDocument ) 
 			{ // FF
@@ -93,26 +93,26 @@ function changeSrc(src, frameID){
 //  state == 200 --> successful
 function XMLHttpPost(url, data, async, callback)
 {
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else if (window.ActiveXObject)
-  {// code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-else{
-	alert("Your browser does not support AJAX.");
-}
-//response if ready do this
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else if (window.ActiveXObject)
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	else{
+		alert("Your browser does not support AJAX.");
+	}
+	//response if ready do this
 
-xmlhttp.open("POST",url,async);
-xmlhttp.onreadystatechange=callback;
+	xmlhttp.open("POST",url,async);
+	xmlhttp.onreadystatechange=callback;
 
-//xmlhttp.setRequestHeader("Content-type","application/json");
-xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-xmlhttp.send("datastr="+ data);
+	//xmlhttp.setRequestHeader("Content-type","application/json");
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send("datastr="+ data);
 }
 
 
