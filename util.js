@@ -5,22 +5,25 @@ var w;
 
 function startWorker(wsource, resID){
 	
-	 if(typeof(Worker) !== "undefined") {
-	        if(typeof(w) == "undefined") {
-	            w = new Worker(wsource);
-	        }
-	        //w.onmessage = function(event) {
-	         //   document.getElementById("result").innerHTML = event.data;
-	        //};
-	    } else {
-	        document.getElementById(resID).innerHTML = "Sorry, your browser does not support Web Workers...";
+	if(typeof(Worker) !== "undefined") { //support web workers?
+	    if(typeof(w) == "undefined") {   
+	        w = new Worker(wsource); //worker will run code in wsource
 	    }
+	    
+		//handle data posted from web worker
+		w.onmessage = function(event) {
+			//data posted from worker held in event.data
+			//document.getElementById(resID).innerHTML = event.data;
+	    };
+	} else {
+	    document.getElementById(resID).innerHTML = "Sorry, your browser does not support Web Workers...";
 	}
+}
 
 function stopWorker() { 
-	    w.terminate();
-	    w = undefined;
-	}
+	w.terminate();
+	w = undefined;
+}
 	
 
 //////////////////////////////////
