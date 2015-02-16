@@ -37,48 +37,33 @@ function preventBubble(e){
 //////////////////////////////////
 // iframe containing div stretch
 function resizeIFrame(iframeID) {
-	//if(self==parent) return false; /* Checks that page is in iframe. */
-	else if(document.getElementById && document.all) /* Sniffs for IE5+.*/
 
-	var FramePageHeight = iframeID.contentWindow.document.body.scrollHeight + 10 + "px";
-	/*
-	var FramePageHeight = framePage.scrollHeight + 10; /* framePage
-	is the ID of the framed page's BODY tag. The added 10 pixels prevent an
-	unnecessary scrollbar. */
+	var el = document.getElementById(iframeID);
 
-	parent.document.getElementById(iframeID).style.height= FramePageHeight;
-	/* "iframeID" is the ID of the inline frame in the parent page. */
-	}
+	//The added 17 pixels for scroll bar.
+	var framePageHeight = null;
+	if(el.contentWindow)
+		framePageHeight = el.contentWindow.document.body.scrollHeight + 17 + "px";
+	else if(el.contentWindow)	
+		framePageHeight = el.contentDocument.document.body.scrollHeight + 17 + "px";
+
+	el.style.height = framePageHeight;
+}
+
+
 
 ///////////////////////////////////
 // change iframe source
 function changeSrc(src, frameID){
-		if(document.body){
-			document.getElementById(frameID).src = src +".html";
-		}
+	
+	if(document.body){
+		document.getElementById(frameID).src = src +".html";
+	}
 
-		try{	
+		
+	resizeIFrame(frameID);
 			
-			var frame = document.getElementById(frameID);
-			
-			if ( frame.contentDocument ) 
-			{ // FF
-			     ibody = frame.contentDocument.getElementsByTagName('body')[0];
-			}
-			else if ( frame.contentWindow ) 
-			{ // IE
-			     ibody = frame.contentWindow.document.getElementsByTagName('body')[0];
-			}
-			 
-			resizeIFrame(frameID);
-			
-		}  
-		//An error is raised if the IFrame domain != its container's domain
-		catch(e)
-		{
-			window.status =	'Error: ' + e.number + '; ' + e.description;
-		}
-		return true;
+		
 
 }
 
