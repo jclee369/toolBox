@@ -38,7 +38,7 @@ function preventBubble(e){
 
 
 //////////////////////////////////
-// iframe containing div stretch
+// iframe stretch to content height
 function resizeIFrame(iframeID) {
 
 	var el = document.getElementById(iframeID);
@@ -62,15 +62,10 @@ function changeSrc(src, frameID){
 	if(document.body){
 		document.getElementById(frameID).src = src +".html";
 	}
-
-		
-	resizeIFrame(frameID);
-			
-		
-
+	
+	resizeIFrame(frameID);	
+	window.parent.scroll(0,0);
 }
-
-
 
 
 ///////////////////////////////////////
@@ -93,10 +88,10 @@ function XMLHttpPost(url, data, async, callback)
 	else{
 		alert("Your browser does not support AJAX.");
 	}
-	//response if ready do this
+	
 
 	xmlhttp.open("POST",url,async);
-	xmlhttp.onreadystatechange=callback;
+	xmlhttp.onreadystatechange=callback;  //response if ready do this
 
 	//xmlhttp.setRequestHeader("Content-type","application/json");
 	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
