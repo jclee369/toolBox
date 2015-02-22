@@ -1,5 +1,6 @@
 
-////////////////////////////////////
+//////////////////////////////////////
+//
 //Web workers
 var w;
 
@@ -28,6 +29,7 @@ function stopWorker() {
 
 //////////////////////////////////
 //prevents event bubbling
+// (stops events from registering on unintended elements)
 function preventBubble(e){
 	var ev = e || window.event;
 	ev.cancelBubble = true;
@@ -37,34 +39,44 @@ function preventBubble(e){
 
 
 
+/////////////////////////////////////////
+//
+// Iframes 
+// NOTES: to get rid of scrollbar use attributes: scrolling="no" and seamless="seamless" on iframe tag
 //////////////////////////////////
 // iframe stretch to content height
 function resizeIFrame(iframeID) {
 
 	var el = document.getElementById(iframeID);
+	el.style.height = "1200px"; //height of iframe set to default
 
-	//The added 17 pixels for scroll bar.
+	
 	var framePageHeight = null;
-	if(el.contentWindow)
-		framePageHeight = el.contentWindow.document.body.scrollHeight + 17 + "px";
-	else if(el.contentWindow)	
-		framePageHeight = el.contentDocument.document.body.scrollHeight + 17 + "px";
-
+	
+	//body for quirks mode html for standard mode
+	var bd = (el.contentWindow.body || el.contentDocument.body); //contentWindow for earlier versions of IE
+	var html = (el.contentWindow.documentElement || el.contentDocument.documentElement); //contentWindow for earlier versions of IE
+																						
+	framePageHeight = Math.max(bd.scrollHeight, bd.clientHeight, bd.offsetHeight,
+							   html.scrollHeight, html.clientHeight, html.offsetHeight) + "px";
+		
 	el.style.height = framePageHeight;
+
 }
 
 
 
 ///////////////////////////////////
 // change iframe source
+//use with resizeFrame call onload
+//which should then resize frame when the source is changed
 function changeSrc(src, frameID){
 	
 	if(document.body){
 		document.getElementById(frameID).src = src +".html";
 	}
 	
-	resizeIFrame(frameID);	
-	window.parent.scroll(0,0);
+	window.parent.scroll(0,0); //scroll back to top of parent
 }
 
 
