@@ -1,4 +1,4 @@
-
+var myUTILs = (function(){
 //////////////////////////////////////
 //
 //Web workers
@@ -31,7 +31,7 @@ function stopWorker() {
 //prevents event bubbling
 // (stops events from registering on unintended elements)
 function preventBubble(e){
-	var ev = e || window.event;
+	var ev = e || window.event; //Microsoft holds event object in Window.event
 	ev.cancelBubble = true;
 	if (ev.stopPropagation) ev.stopPropagation();
 	
@@ -48,23 +48,50 @@ function preventBubble(e){
 function resizeIFrame(iframeID) {
 
 	var el = document.getElementById(iframeID);
-	el.style.height = "1200px"; //height of iframe set to default
+	el.style.height = "1200px"; 	//height of iframe set to default
 
 	
 	var framePageHeight = null;
 	
-	//body for quirks mode html for standard mode
-	var bd = (el.contentWindow.body || el.contentDocument.body); //contentWindow for earlier versions of IE
+	//body/html for quirks/standard modes, diff doctypes 
+	/*NOTES (found http://www.codingforums.com/javascript-programming/138407-document-documentelement-vs-document-body.html):  
+	1. IE 6-8 strict, Mozilla strict and Opera 9.5+ strict
+	document.body.clientHeight = document's height
+	document.documentElement.clientHeight = window's viewport height
+
+	2. IE 5 and IE 6-8 quirks
+	document.body.clientHeight = window's viewport height
+	document.documentElement.clientHeight = 0
+
+	3. Opera 7-9.2 and Opera 9.5 quirks
+	document.body.clientHeight = window's viewport height
+	document.documentElement.clientHeight = document's height
+
+	4.Safari
+	document.body.clientHeight = document's height
+	document.documentElement.clientHeight = document's height
+	*/
+ 	var bd = (el.contentWindow.body || el.contentDocument.body); //contentWindow for earlier versions of IE
 	var html = (el.contentWindow.documentElement || el.contentDocument.documentElement); //contentWindow for earlier versions of IE
-																						
+	
+	//calculate height of document in iframe
 	framePageHeight = Math.max(bd.scrollHeight, bd.clientHeight, bd.offsetHeight,
 							   html.scrollHeight, html.clientHeight, html.offsetHeight) + "px";
-		
-	el.style.height = framePageHeight;
+	
+	
+	el.style.height = framePageHeight;	//set height of iframe to calculated height
 
 }
 
-
+////////////////////////////////////
+//get window height
+function getWindowHeight(){
+	 	var d = document,
+	    var e = d.documentElement,
+	    var g = d.getElementsByTagName('body')[0],
+	   
+	    return w.innerHeight|| e.clientHeight|| g.clientHeight;
+}
 
 ///////////////////////////////////
 // change iframe source
@@ -130,3 +157,4 @@ function getCookie(cookien){
     }
     return "";
 }
+})();
